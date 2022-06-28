@@ -34,5 +34,5 @@ jobs:
       - name: Build
         uses: ros-tooling/action-ros-ci@0.2.5
         with:
-          package-name: test.pkg 
+          package-name: test_pkg 
           target-ros2-distro: galactic
