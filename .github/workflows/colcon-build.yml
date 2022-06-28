@@ -18,6 +18,8 @@ jobs:
 
       - name: Setup
         uses: ros-tooling/setup-ros@0.3.3
+        with:
+          required-ros-distributions: galactic
 
       - name: Build
         uses: ros-tooling/action-ros-ci@0.2.5
