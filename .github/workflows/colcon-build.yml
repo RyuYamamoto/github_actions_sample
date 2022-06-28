@@ -34,5 +34,6 @@ jobs:
       - name: Build
         uses: ros-tooling/action-ros-ci@0.2.5
         with:
-          package-name: test_pkg 
+          package-name: test_pkg
+          vcs-repo-file-url: dependency.repos
           target-ros2-distro: galactic
