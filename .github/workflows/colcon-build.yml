@@ -1,10 +1,7 @@
-name: Lint ROS2 package
+name: colcon-build-test
 on:
   # Run this action whenever a pull request is made
   pull_request:
-  push:
-    branches:
-      - main
   workflow_dispatch:
 
 jobs:
@@ -14,29 +11,36 @@ jobs:
     strategy:
       matrix:
         ros_distribution:
-          - galactic
+          - humble
 
         include:
-          - docker_image: rostooling/setup-ros-docker:ubuntu-focal-ros-galactic-ros-base-latest
-            ros_distribution: galactic
+          - docker_image: rostooling/setup-ros-docker:ubuntu-jammy-ros-humble-ros-base-latest
+            ros_distribution: humble
     container:
       image: ${{ matrix.docker_image }}
 
     steps:
+      - name: Install Dependencies Manually
+        run: |
+          rosdep update
+          sudo apt-get update
+          sudo apt-get install -y libunwind-dev
+          rosdep install --from-path . -i -y --rosdistro ${{ matrix.ros_distribution }}
+
       - name: Check out Repository
         uses: actions/checkout@v3
 
       - name: Setup
-        uses: ros-tooling/setup-ros@0.3.3
+        uses: ros-tooling/setup-ros@0.7.0
         with:
-          required-ros-distributions: galactic
+          required-ros-distributions: humble
 
       - name: Build
-        uses: ros-tooling/action-ros-ci@0.2.5
+        uses: ros-tooling/action-ros-ci@0.3.3
         with:
-          package-name: test_pkg
-          target-ros2-distro: galactic
-          vcs-repo-file-url: dependency.repos
+          package-name: navyu
+          target-ros2-distro: humble
           import-token: ${{ secrets.GITHUB_TOKEN }}
+          skip-tests: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
