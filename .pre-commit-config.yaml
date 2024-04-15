@@ -1,3 +1,6 @@
+ci:
+  autofix_commit_msg: "style(pre-commit): autofix"
+
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.4.0
@@ -39,4 +42,4 @@ repos:
     rev: v17.0.6
     hooks:
       - id: clang-format
-        types_or: [c++, c, cuda]
+        types_or: [c++]
